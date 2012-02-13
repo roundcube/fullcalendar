@@ -239,7 +239,7 @@ function AgendaEventRenderer() {
 
 			seg.top = top;
 			seg.left = left;
-			seg.outerWidth = width;
+			seg.outerWidth = outerWidth - (overlapping ? 0 : 1);
 			seg.outerHeight = bottom - top;
 			html += slotSegHtml(event, seg);
 		}
