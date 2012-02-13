@@ -343,6 +343,11 @@ function Calendar(element, options, eventSources) {
 			// ... which will call renderEvents
 	}
 
+
+	function refetchEvents(source) {
+		fetchEvents(currentView.visStart, currentView.visEnd, source); // will call reportEvents
+	}
+
 	
 	// called when event data arrives
 	function reportEvents(_events) {
