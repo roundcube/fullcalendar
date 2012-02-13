@@ -504,6 +504,8 @@ function DayEventRenderer() {
 			else {
 				subrows[j] = [ segment ];
 			}
+			else  // always set a value (issue #1108 )
+				seg.outerHeight = 0;
 		}
 
 		return subrows;
