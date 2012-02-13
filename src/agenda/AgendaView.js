@@ -826,10 +826,10 @@ function AgendaView(element, calendar, viewName) {
 	function slotSelectionMousedown(ev) {
 		if (ev.which == 1 && opt('selectable')) { // ev.which==1 means left mouse button
 			unselect(ev);
-			var dates;
+			var dates, helperOption = opt('selectHelper');
 			hoverListener.start(function(cell, origCell) {
 				clearSelection();
-				if (cell && cell.col == origCell.col && !getIsCellAllDay(cell)) {
+				if (cell && (cell.col == origCell.col || !helperOption) && !getIsCellAllDay(cell)) {
 					var d1 = realCellToDate(origCell);
 					var d2 = realCellToDate(cell);
 					dates = [
