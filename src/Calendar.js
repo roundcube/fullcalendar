@@ -232,7 +232,11 @@ function Calendar(element, options, eventSources) {
 			clearEvents();
 			calcSize();
 			setSize();
-			renderEvents();
+			unselect();
+			currentView.clearEvents();
+			currentView.trigger('viewRender', currentView);
+			currentView.renderEvents(events);
+			currentView.sizeDirty = false;
 		}
 	}
 	
@@ -360,6 +364,18 @@ function Calendar(element, options, eventSources) {
 
 	function updateTitle() {
 		header.updateTitle(currentView.title);
+	}
+
+
+	// attempts to rerenderEvents
+	function rerenderEvents(modifiedEventID) {
+		markEventsDirty();
+		if (elementVisible()) {
+			currentView.clearEvents();
+			currentView.trigger('viewRender', currentView);
+			currentView.renderEvents(events, modifiedEventID);
+			currentView.eventsDirty = false;
+		}
 	}
 
 
