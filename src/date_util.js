@@ -374,3 +374,15 @@ function iso8601Week(date) {
 	return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
 }
 
+// Determine the week of the year based on the ISO 8601 definition.
+// copied from jquery UI Datepicker
+var iso8601Week = function(date) {
+	var checkDate = cloneDate(date);
+	// Find Thursday of this week starting on Monday
+	checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
+	var time = checkDate.getTime();
+	checkDate.setMonth(0); // Compare with Jan 1
+	checkDate.setDate(1);
+	return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+};
+
