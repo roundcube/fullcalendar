@@ -349,7 +349,8 @@ function DayEventRenderer() {
 	// If `doRowHeights` is `true`, also sets each row's first cell to an explicit height,
 	// so that if elements vertically overflow, the cell expands vertically to compensate.
 	function setVerticals(segments, doRowHeights) {
-		var rowContentHeights = calculateVerticals(segments); // also sets segment.top
+		var overflowLinks = {};
+		var rowContentHeights = calculateVerticals(segments, overflowLinks); // also sets segment.top
 		var rowContentElements = getRowContentElements(); // returns 1 inner div per row
 		var rowContentTops = [];
 
@@ -357,6 +358,8 @@ function DayEventRenderer() {
 		if (doRowHeights) {
 			for (var i=0; i<rowContentElements.length; i++) {
 				rowContentElements[i].height(rowContentHeights[i]);
+				if (overflowLinks[i])
+					renderOverflowLinks(overflowLinks[i], rowContentElements[i]);
 			}
 		}
 
@@ -371,10 +374,15 @@ function DayEventRenderer() {
 		// Set each segment element's CSS "top" property.
 		// Each segment object has a "top" property, which is relative to the row's top, but...
 		segmentElementEach(segments, function(segment, element) {
-			element.css(
-				'top',
-				rowContentTops[segment.row] + segment.top // ...now, relative to views's origin
-			);
+			if (!segment.overflow) {
+				element.css(
+					'top',
+					rowContentTops[segment.row] + segment.top // ...now, relative to views's origin
+				);
+			}
+			else {
+				element.hide();
+			}
 		});
 	}
 
@@ -383,20 +391,25 @@ function DayEventRenderer() {
 	// Also, return an array that contains the "content" height for each row
 	// (the height displaced by the vertically stacked events in the row).
 	// Requires segments to have their `outerHeight` property already set.
-	function calculateVerticals(segments) {
+	function calculateVerticals(segments, overflowLinks) {
 		var rowCnt = getRowCnt();
 		var colCnt = getColCnt();
 		var rowContentHeights = []; // content height for each row
 		var segmentRows = buildSegmentRows(segments); // an array of segment arrays, one for each row
+		var maxHeight = opt('maxHeight');
+		var top;
 
 		for (var rowI=0; rowI<rowCnt; rowI++) {
 			var segmentRow = segmentRows[rowI];
 
 			// an array of running total heights for each column.
 			// initialize with all zeros.
+			overflowLinks[rowI] = {};
 			var colHeights = [];
+			var overflows = [];
 			for (var colI=0; colI<colCnt; colI++) {
 				colHeights.push(0);
+				overflows.push(0);
 			}
 
 			// loop through every segment
@@ -405,16 +418,36 @@ function DayEventRenderer() {
 
 				// find the segment's top coordinate by looking at the max height
 				// of all the columns the segment will be in.
-				segment.top = arrayMax(
+				top = arrayMax(
 					colHeights.slice(
 						segment.leftCol,
 						segment.rightCol + 1 // make exclusive for slice
 					)
 				);
 
+				if (maxHeight && top + segment.outerHeight > maxHeight) {
+					segment.overflow = true;
+				}
+				else {
+					segment.top = top;
+					top += segment.outerHeight;
+				}
+
 				// adjust the columns to account for the segment's height
 				for (var colI=segment.leftCol; colI<=segment.rightCol; colI++) {
-					colHeights[colI] = segment.top + segment.outerHeight;
+					if (overflows[colI]) {
+						segment.overflow = true;
+					}
+					if (segment.overflow) {
+						if (segment.isStart && !overflowLinks[rowI][colI])
+							overflowLinks[rowI][colI] = { seg:segment, top:top, date:cloneDate(segment.event.start, true), count:0 };
+						if (overflowLinks[rowI][colI])
+							overflowLinks[rowI][colI].count++;
+						overflows[colI]++;
+					}
+					else {
+						colHeights[colI] = top;
+					}
 				}
 			}
 
@@ -524,6 +557,29 @@ function DayEventRenderer() {
 		return rowDivs;
 	}
 
+
+	function renderOverflowLinks(overflowLinks, rowDiv) {
+		var container = getDaySegmentContainer();
+		var colCnt = getColCnt();
+		var element, triggerRes, link;
+		for (var j=0; j<colCnt; j++) {
+			if ((link = overflowLinks[j])) {
+				if (link.count > 1) {
+					element = $('<a>').addClass('fc-more-link').html('+'+link.count).appendTo(container);
+					element[0].style.position = 'absolute';
+					element[0].style.left = link.seg.left + 'px';
+					element[0].style.top = (link.top + rowDiv[0].offsetTop) + 'px';
+					triggerRes = trigger('overflowRender', link, { count:link.count, date:link.date }, element);
+					if (triggerRes === false)
+						element.remove();
+				}
+				else {
+					link.seg.top = link.top;
+					link.seg.overflow = false;
+				}
+			}
+		}
+	}
 
 
 	/* Mouse Handlers
