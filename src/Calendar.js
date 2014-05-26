@@ -372,18 +372,6 @@ function Calendar(element, options, eventSources) {
 	}
 
 
-	// attempts to rerenderEvents
-	function rerenderEvents(modifiedEventID) {
-		markEventsDirty();
-		if (elementVisible()) {
-			currentView.clearEvents();
-			currentView.trigger('viewRender', currentView);
-			currentView.renderEvents(events, modifiedEventID);
-			currentView.eventsDirty = false;
-		}
-	}
-
-
 	function updateTodayButton() {
 		var today = new Date();
 		if (today >= currentView.start && today < currentView.end) {
