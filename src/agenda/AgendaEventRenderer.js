@@ -194,7 +194,8 @@ function AgendaEventRenderer() {
 			titleElement,
 			height,
 			slotSegmentContainer = getSlotSegmentContainer(),
-			isRTL = opt('isRTL');
+			isRTL = opt('isRTL'),
+			colCnt = getColCnt();
 			
 		// calculate position/dimensions, create html
 		for (i=0; i<segCnt; i++) {
@@ -213,7 +214,8 @@ function AgendaEventRenderer() {
 
 			width = columnWidth * (seg.forwardCoord - seg.backwardCoord);
 
-			if (opt('slotEventOverlap')) {
+			// bruederli@kolabsys.com: always disable slotEventOverlap in single day view
+			if (opt('slotEventOverlap') && colCnt > 1) {
 				// double the width while making sure resize handle is visible
 				// (assumed to be 20px wide)
 				width = Math.max(
@@ -239,7 +241,7 @@ function AgendaEventRenderer() {
 
 			seg.top = top;
 			seg.left = left;
-			seg.outerWidth = outerWidth - (overlapping ? 0 : 1);
+			seg.outerWidth = width;
 			seg.outerHeight = bottom - top;
 			html += slotSegHtml(event, seg);
 		}
@@ -380,7 +382,7 @@ function AgendaEventRenderer() {
 	// draw a horizontal line indicating the current time (#143)
 	function setTimeIndicator()
 	{
-		var container = getBodyContent();
+		var container = getSlotContainer();
 		var timeline = container.children('.fc-timeline');
 		if (timeline.length == 0) { // if timeline isn't there, add it
 			timeline = $('<hr>').addClass('fc-timeline').appendTo(container);

@@ -34,6 +34,11 @@
 	margin: 1px 2px 3px 2px;
 }
 
+.fc-view-table tr.fc-event {
+	background: inherit;
+	color: inherit;
+}
+
 .fc-view-table tr.fc-event td {
 	padding: 2px;
 	border-bottom: 1px solid #ccc;
@@ -79,7 +84,7 @@
 }
 
 .fc-view-table col.fc-event-time {
-	width: 8em;
+	width: 9em;
 }
 
 .fc-view-table td.fc-event-date,
