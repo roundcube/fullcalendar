@@ -1,6 +1,6 @@
 {
   "name": "fullcalendar",
-  "version": "1.6.4",
+  "version": "1.6.4-rcube-1.0",
 
   "dependencies": {
     "jquery": "~1.10.2"
@@ -31,5 +31,5 @@
     "email": "arshaw@arshaw.com",
     "url": "http://arshaw.com/"
   },
-  "copyright": "2013 Adam Shaw"
+  "copyright": "2013 Adam Shaw, 2014 Kolab Systems AG"
 }
