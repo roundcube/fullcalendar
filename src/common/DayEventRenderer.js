@@ -235,7 +235,7 @@ function DayEventRenderer() {
 		var url = event.url;
 
 		// generate the list of CSS classNames
-		var classNames = [ 'fc-event', 'fc-event-hori' ];
+		var classNames = [ 'fc-event', 'fc-event-skin', 'fc-event-hori' ];
 		if (isEventDraggable(event)) {
 			classNames.push('fc-event-draggable');
 		}

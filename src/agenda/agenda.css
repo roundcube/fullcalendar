@@ -97,6 +97,14 @@
 	border-width: 0 1px;
 	}
 
+.fc-event-vert .fc-event-head,
+.fc-event-vert .fc-event-content {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	overflow: hidden;
+	}
+
 .fc-event-vert.fc-event-start {
 	border-top-width: 1px;
 	border-top-left-radius: 3px;
