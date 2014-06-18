@@ -270,7 +270,7 @@ function DayEventRenderer() {
 				"left:" + segment.left + "px;" +
 				skinCss +
 				"'" +
-			">" +
+			" tabindex='0'>" +
 			"<div class='fc-event-inner'>";
 		if (!event.allDay && segment.isStart) {
 			html +=

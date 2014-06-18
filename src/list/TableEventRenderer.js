@@ -72,7 +72,7 @@ function TableEventRenderer() {
 					rowClasses.push('fc-today');
 				}
 				
-				s +=  "<tr class='" + rowClasses.join(' ') + "'>";
+				s +=  "<tr class='" + rowClasses.join(' ') + "' tabindex='0'>";
 				for (var col, c=0; c < tableCols.length; c++) {
 					col = tableCols[c];
 					if (col == 'handle') {

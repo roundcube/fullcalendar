@@ -162,7 +162,11 @@ function View(element, calendar, viewName) {
 				function(ev) {
 					trigger('eventMouseout', this, event, ev);
 				}
-			);
+			)
+			.keypress(function(ev) {
+				if (ev.keyCode == 13)
+					$(this).trigger('click', { pointerType:'keyboard' });
+			});
 		// TODO: don't fire eventMouseover/eventMouseout *while* dragging is occuring (on subject element)
 		// TODO: same for resizing
 	}

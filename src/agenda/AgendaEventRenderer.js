@@ -348,7 +348,7 @@ function AgendaEventRenderer() {
 				"left:" + seg.left + "px;" +
 				skinCss +
 				"'" +
-			">" +
+			" tabindex='0'>" +
 			"<div class='fc-event-inner fc-event-skin'" + skinCssAttr + ">" +
 			"<div class='fc-event-head fc-event-skin'" + skinCssAttr + ">" +
 			"<div class='fc-event-time'>" +
@@ -364,7 +364,7 @@ function AgendaEventRenderer() {
 			"</div>"; // close inner
 		if (seg.isEnd && isEventResizable(event)) {
 			html +=
-				"<div class='ui-resizable-handle ui-resizable-s'>=</div>";
+				"<div class='ui-resizable-handle ui-resizable-s' role='presentation'>=</div>";
 		}
 		html +=
 			"</" + (url ? "a" : "div") + ">";

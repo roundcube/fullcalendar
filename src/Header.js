@@ -51,7 +51,7 @@ function Header(calendar, options) {
 				var prevButton;
 				$.each(this.split(','), function(j, buttonName) {
 					if (buttonName == 'title') {
-						e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
+						e.append("<span class='fc-header-title'><h2 aria-live='polite' aria-relevant='text' aria-atomic='true'>&nbsp;</h2></span>");
 						if (prevButton) {
 							prevButton.addClass(tm + '-corner-right');
 						}
@@ -71,7 +71,7 @@ function Header(calendar, options) {
 							var icon = options.theme ? smartProperty(options.buttonIcons, buttonName) : null; // why are we using smartProperty here?
 							var text = smartProperty(options.buttonText, buttonName); // why are we using smartProperty here?
 							var button = $(
-								"<span class='fc-button fc-button-" + buttonName + " " + tm + "-state-default'>" +
+								"<span class='fc-button fc-button-" + buttonName + " " + tm + "-state-default' role='button' tabindex='0'>" +
 									(icon ?
 										"<span class='fc-icon-wrap'>" +
 											"<span class='ui-icon ui-icon-" + icon + "'/>" +
@@ -107,6 +107,10 @@ function Header(calendar, options) {
 											.removeClass(tm + '-state-down');
 									}
 								)
+								.keypress(function(ev) {
+									if (ev.keyCode == 13)
+										$(ev.target).trigger('click');
+								})
 								.appendTo(e);
 							disableTextSelection(button);
 							if (!prevButton) {
@@ -133,25 +137,25 @@ function Header(calendar, options) {
 	
 	function activateButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
-			.addClass(tm + '-state-active');
+			.addClass(tm + '-state-active').attr('tabindex', '-1');
 	}
 	
 	
 	function deactivateButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
-			.removeClass(tm + '-state-active');
+			.removeClass(tm + '-state-active').attr('tabindex', '0');
 	}
 	
 	
 	function disableButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
-			.addClass(tm + '-state-disabled');
+			.addClass(tm + '-state-disabled').attr('tabindex', '-1');
 	}
 	
 	
 	function enableButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
-			.removeClass(tm + '-state-disabled');
+			.removeClass(tm + '-state-disabled').attr('tabindex', '0');
 	}
 
 

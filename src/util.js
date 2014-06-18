@@ -28,7 +28,7 @@ function _exclEndDay(end, allDay) {
 
 
 function lazySegBind(container, segs, bindHandlers) {
-	container.unbind('mouseover').mouseover(function(ev) {
+	container.unbind('mouseover focusin').bind('mouseover focusin', function(ev) {
 		var parent=ev.target, e,
 			i, seg;
 		while (parent != this) {
