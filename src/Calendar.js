@@ -299,9 +299,9 @@ function Calendar(element, options, eventSources) {
 	// TODO: going forward, most of this stuff should be directly handled by the view
 
 
-	function refetchEvents() { // can be called as an API method
+	function refetchEvents(source) { // can be called as an API method
 		clearEvents();
-		fetchAndRenderEvents();
+		fetchAndRenderEvents(source);
 	}
 
 
@@ -337,18 +337,13 @@ function Calendar(element, options, eventSources) {
 	}
 
 
-	function fetchAndRenderEvents() {
-		fetchEvents(currentView.visStart, currentView.visEnd);
+	function fetchAndRenderEvents(source) {
+		fetchEvents(currentView.visStart, currentView.visEnd, source);
 			// ... will call reportEvents
 			// ... which will call renderEvents
 	}
 
 
-	function refetchEvents(source) {
-		fetchEvents(currentView.visStart, currentView.visEnd, source); // will call reportEvents
-	}
-
-	
 	// called when event data arrives
 	function reportEvents(_events) {
 		events = _events;
