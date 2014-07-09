@@ -36,6 +36,7 @@ function ListEventRenderer() {
 	
 	function renderEvents(events, modifiedEventId) {
 		events.sort(sortCmp);
+		clearEvents();
 		renderSegs(compileSegs(events), modifiedEventId);
 	}
 	

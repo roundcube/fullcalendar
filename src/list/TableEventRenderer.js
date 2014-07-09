@@ -36,6 +36,7 @@ function TableEventRenderer() {
 	
 	function renderEvents(events, modifiedEventId) {
 		events.sort(sortCmp);
+		clearEvents();
 		renderSegs(compileSegs(events), modifiedEventId);
 		getListContainer().removeClass('fc-list-smart fc-list-day fc-list-month fc-list-week').addClass('fc-list-' + opt('listSections'));
 	}
@@ -67,7 +68,7 @@ function TableEventRenderer() {
 				if (event.source && event.source.className) {
 					skinClasses = skinClasses.concat(event.source.className);
 				}
-				rowClasses = ['fc-event', 'fc-event-row', 'fc-'+dayIDs[event.start.getDay()]];
+				rowClasses = ['fc-event', 'fc-event-row', 'fc-'+dayIDs[event.start.getDay()]].concat(event.className);
 				if (seg.daydiff == 0) {
 					rowClasses.push('fc-today');
 				}
