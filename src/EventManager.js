@@ -19,6 +19,7 @@ function EventManager(options, _sources) {
 	t.fetchEvents = fetchEvents;
 	t.addEventSource = addEventSource;
 	t.removeEventSource = removeEventSource;
+	t.removeEventSources = removeEventSources;
 	t.updateEvent = updateEvent;
 	t.renderEvent = renderEvent;
 	t.removeEvents = removeEvents;
@@ -229,6 +230,12 @@ function EventManager(options, _sources) {
 			return !isSourcesEqual(e.source, source);
 		});
 		reportEvents(cache);
+	}
+	
+	
+	function removeEventSources() {
+		sources = [];
+		removeEvents();
 	}
 	
 	
